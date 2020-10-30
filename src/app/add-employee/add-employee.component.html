@@ -1,0 +1,64 @@
+<button type="btn" class="btn btn-info py-2 mb-4" (click)="openModal(addNewTemplate)">
+  <svg width="1.2em" height="1.2em" viewBox="0 0 16 16" class="bi bi-person-plus-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm7.5-3a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
+</svg></button>
+
+<ng-template #addNewTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Add new employee</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide(); onClose();">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+      <form #f="ngForm" (ngSubmit)="f.form.valid && onSubmit(f)" >
+        <div class="form-group">
+          <label for="email">Email: </label>
+          <input type="email" [(ngModel)]="email" class="form-control" value="" name="email" required />
+        </div>
+        <div class="form-group">
+          <label for="password">Password: </label>
+          <input type="password" [(ngModel)]="password" class="form-control" value="" name="password" required />
+        </div>
+        <div class="form-group">
+          <label for="permissions">User permissions: </label>
+          <select class="form-control" name="permissions" [(ngModel)]="permissions" required>
+            <option *ngFor="let permissions of permissionType" [value]="permissions">{{ permissions }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="employeeName">Employee name</label>
+          <input type="text" [(ngModel)]="employeeName" class="form-control" value="" name="employeeName"
+            required />
+        </div>
+        <div class="form-group">
+          <label for="contract">Type of contract: </label>
+          <select class="form-control" name="contract" [(ngModel)]="contract" required>
+            <option *ngFor="let contract of contractType" [value]="contract">{{ contract }}
+            </option>
+          </select>
+        </div>
+      <div class="form-group">
+        <label for="hours">Working hours: </label>
+        <select class="form-control" name="hours" [(ngModel)]="hours" required>
+          <option *ngFor="let shift of workingHours" [value]="shift">{{ shift }}
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="address">Address: </label>
+        <input type="text" [(ngModel)]="address" class="form-control" value="" name="address" required />
+      </div>
+      <div class="form-group">
+        <label for="telephone">Tel. number: </label>
+        <input [(ngModel)]="telephone" class="form-control" value="" name="telephone" required />
+      </div>
+      <div class="form-group">
+        <label for="start">Start date: </label>
+        <input type="text" [(ngModel)]="start" class="form-control" value="" name="start" required />
+      </div>
+      <button type="submit" class="btn btn-info add-button" (click)="f.form.valid && modalRef.hide()">Add employee</button>
+    </form>
+  </div>
+</ng-template>

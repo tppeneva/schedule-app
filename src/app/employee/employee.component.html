@@ -1,0 +1,79 @@
+<div class="d-flex justify-content-between align-items-center">
+  <div>
+    <ul class="list-group">
+      <li>Name: {{ employeeDetails.name }}</li>
+      <li>Hours: {{ employeeDetails.hours }}</li>
+    </ul>
+  </div>
+  <div>
+    <button type="button" class="btn btn-info py-2" (click)="openModal(employeeTemplate)">
+      <svg width="1.2em" height="1.2em" viewBox="0 0 16 16" class="bi bi-info-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+        <path d="M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588z"/>
+        <circle cx="8" cy="4.5" r="1"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
+    <ng-template #employeeTemplate>
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">{{ employeeDetails.name }}</h4>
+            <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide(); onClose();">
+              <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <div class="modal-body">
+            <button type="button" class="btn btn-warning py-2 float-right" (click)="editEmployeeInfo()">
+              <svg width="1.2em" height="1.2em" viewBox="0 0 16 16" class="bi bi-pencil" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+              </svg>
+            </button>
+            <form #f="ngForm" (ngSubmit)="f.form.valid && onSubmit(f)">
+              <div class="form-group">
+                <label for="permissions">User permissions: {{ employeeDetails.permissions }}</label>
+                <select *ngIf="editInfo" class="form-control" name="permissions" [(ngModel)]="permissions">
+                  <option *ngFor="let permissions of permissionType" [value]="permissions">{{ permissions }}
+                  </option>
+                </select>
+              </div>
+            <div class="form-group">
+              <label for="contract">Type of contract: {{ employeeDetails.contract }}</label>
+              <select *ngIf="editInfo" class="form-control" name="contract" [(ngModel)]="contract">
+                <option *ngFor="let contract of contractType" [value]="contract">{{ contract }}
+                </option>
+              </select>
+            </div>
+          <div class="form-group">
+            <label for="shift">Working hours: {{ employeeDetails.hours }}</label>
+            <select *ngIf="editInfo" class="form-control" name="hours" [(ngModel)]="hours">
+              <option *ngFor="let shift of workingHours" [value]="shift">{{ shift }}
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="address">Address: {{ employeeDetails.address }}</label>
+            <input *ngIf="editInfo" placeholder="{{ employeeDetails.address }}" type="text" [(ngModel)]="address" class="form-control" value="" name="address"/>
+          </div>
+          <div class="form-group">
+            <label for="telephone">Tel.: {{ employeeDetails.telephone }}</label>
+            <input  *ngIf="editInfo" placeholder="{{ employeeDetails.telephone }}" type="text" [(ngModel)]="telephone" class="form-control" value="" name="telephone"/>
+          </div>
+            <span class="text-info">Started: {{ employeeDetails.start }}</span>
+            <div class="d-flex justify-content-between">
+              <button type="button" class="btn btn-light py-2" (click)="removeTab(employeeDetails.index)" (click)="modalRef.hide()">
+                <svg width="1.2em" height="1.2em" viewBox="0 0 16 16" class="bi bi-slash-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                  <path fill-rule="evenodd" d="M11.354 4.646a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                </svg>
+              </button>
+              <button [disabled]="disabled" type="button" class="btn btn-success py-2" (click)="modalRef.hide(); onSubmit(); f.reset()">
+                <svg width="1.2em" height="1.2em" viewBox="0 0 16 16" class="bi bi-check2" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+                </svg>
+              </button>
+            </div>
+            </form>
+        </div>
+      </ng-template>

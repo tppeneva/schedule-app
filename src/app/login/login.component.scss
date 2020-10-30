@@ -1,0 +1,15 @@
+.login-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+.login-form form {
+  min-width: 50%;
+}
+.login-form h2 {
+  text-align: center;
+}
+.login-form button {
+  margin: 20px auto;
+}

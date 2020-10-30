@@ -1,0 +1,19 @@
+<div class="login-form">
+  <form  #f="ngForm" (ngSubmit)="f.form.valid && onSubmit(f)">
+      <h2>Login:</h2>
+    <div *ngIf='showErrors' class="alert alert-danger" role="alert">
+      {{ errors }}
+    </div>
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" [(ngModel)]="email" class="form-control" value="" name="email" required />
+    </div>
+    <div class="form-group">
+      <label for="password">Password:</label>
+      <input type="password" [(ngModel)]="password" class="form-control" value="" name="password" required />
+    </div>
+    <div class="form-group d-flex justify-content-center">
+      <button class="btn btn-info" type="submit" name="login_button" (click)="f.form.valid">Login</button>
+    </div>
+  </form>
+</div>

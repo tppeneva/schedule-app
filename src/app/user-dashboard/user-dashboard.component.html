@@ -1,0 +1,62 @@
+<div class="container">
+  <div class="d-flex justify-content-between align-items-center">
+    <div class="d-inline-flex p-2" >
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link text-info" routerLink="/user-dashboard" routerLinkActive="active">User Dashboard</a>
+        </li>
+      </ul>
+  </div>
+  <button type="button" class="btn btn-info logout-button" (click)="logOut()">Logout</button>
+  </div>
+
+  <app-date-range-picker (dateRange) ="getDateRange($event)"></app-date-range-picker>
+
+  <div *ngFor="let dateInst of dateArray" class="mt-4">
+    <span class="text-info">{{dateInst}}</span>
+    <div *ngFor="let employee of workingShifts; let i = index">
+      <ul class="list-group" *ngIf="dateInst==employee.date">
+        <li class="list-group-item mb-2" [attr.data-selected]="false">
+          {{ employee.name }}
+          <button *ngIf="employee.status" type="button" class="btn btn-warning py-2 ml-2" (click)="onEdit(i)">
+            <svg width="1.2em" height="1.2em" viewBox="0 0 16 16" class="bi bi-pencil" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+            </svg>
+          </button>
+          <form *ngIf="!employee.status" #f="ngForm" (ngSubmit)="f.form.valid && onSave(f)">
+            <div class="form-container">
+              <div class="form-group">
+                <label for="adminEmail" class="text-info">Notify admin</label>
+                <select class="form-control" name="adminEmail" [(ngModel)]="adminEmail">
+                  <option *ngFor="let admin of admins" [value]="admin.email">{{ admin.name }}: {{admin.email}}
+                  </option>
+                </select>
+              </div>
+              <div class="form-group">
+                <button *ngIf="!employee.status" type="button" class="btn btn-success py-2 ml-2" (click)="onSave(employee.index, i)">
+                  <svg width="1.2em" height="1.2em" viewBox="0 0 16 16" class="bi bi-check2" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </form>
+          <div class="grid-container" #myBounds>
+            <div *ngIf="employee.status" [bounds]="myBounds" [inBounds]="true" [gridSize]="gridSize" [zIndex]="100" [preventDefaultEvent]="true" [style.width.px]="employee.hours*50" [style.left.px]="getPosition(i)" [ngClass]="employee.pending ? 'drag-grid pending' : 'drag-grid'">
+            <span class="grid-shift-label">Shift starts at {{employee.shiftStart}}h.</span>
+            </div>
+            <div *ngIf="!employee.status" ngDraggable [bounds]="myBounds" [inBounds]="true" [gridSize]="gridSize" [zIndex]="100" [preventDefaultEvent]="true" [style.width.px]="employee.hours*50" [ngClass]="employee.pending ? 'drag-grid pending' : 'drag-grid'" [style.left.px]="getPosition(i)" (endOffset)="onMoveEnd($event, i)">
+              <span class="grid-shift-label">Shift starts at {{employee.shiftStart}}h.</span>
+              </div>
+            <div *ngFor="let x of grids">
+              <div *ngFor="let y of grids">
+                <div [ngDraggable]="false" [position]="{x: x, y: y }" [preventDefaultEvent]="true" class="grid">
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

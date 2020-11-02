@@ -13,7 +13,7 @@ const fs = require('fs');
 const Json2csvParser = require('json2csv').Parser;
 
 mongoose.Promise = Promise
-uri = 'mongodb+srv://admin:admin@schedule-app.0evq8.mongodb.net/schedule-app?retryWrites=true&w=majority'
+uri = process.env.MONGO_DB_URI
 
 const dbCollectionName = "users";
 const dbCollectionShedule = "work-schedule";
@@ -72,7 +72,6 @@ app.post('/login', (req, res) => {                                              
           res.json({ message: '', success: !!req.session.user, permissions: user.permissions });
           return
         }
-
   });
 });
 
